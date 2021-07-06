@@ -174,6 +174,10 @@ export class DateTimePickerModal extends React.PureComponent {
                 ? pickerStyles.pickerInline
                 : pickerStyles.pickerSpinner,
               pickerStyleIOS,
+              ,
+              {
+                alignItems: "center",
+              },
             ]}
           >
             <DateTimePicker
@@ -205,7 +209,6 @@ const pickerStyles = StyleSheet.create({
   },
   container: {
     backgroundColor: "white",
-    alignItems: "center",
     borderRadius: BORDER_RADIUS,
     marginBottom: 8,
     overflow: "hidden",
@@ -267,6 +270,7 @@ export const ConfirmButton = ({
 
 export const confirmButtonStyles = StyleSheet.create({
   button: {
+    borderTopColor: "#ccc",
     borderTopWidth: StyleSheet.hairlineWidth,
     backgroundColor: "transparent",
     height: 57,
