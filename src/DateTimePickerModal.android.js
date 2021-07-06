@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {
   StyleSheet,
   Text,
-  TouchableHighlight,
+  TouchableOpacity,
   View,
   Appearance,
 } from "react-native";
@@ -253,7 +253,7 @@ export const ConfirmButton = ({
   style = confirmButtonStyles,
 }) => {
   return (
-    <TouchableHighlight
+    <TouchableOpacity
       style={[style.button]}
       onPress={onPress}
       accessible={true}
@@ -261,7 +261,7 @@ export const ConfirmButton = ({
       accessibilityLabel={label}
     >
       <Text style={style.text}>{label}</Text>
-    </TouchableHighlight>
+    </TouchableOpacity>
   );
 };
 
@@ -296,7 +296,7 @@ export const CancelButton = ({
   const themedButtonStyle = cancelButtonStyles.buttonLight;
   const underlayColor = HIGHLIGHT_COLOR_LIGHT;
   return (
-    <TouchableHighlight
+    <TouchableOpacity
       style={[style.button, themedButtonStyle]}
       underlayColor={underlayColor}
       onPress={onPress}
@@ -305,7 +305,7 @@ export const CancelButton = ({
       accessibilityLabel={label}
     >
       <Text style={style.text}>{label}</Text>
-    </TouchableHighlight>
+    </TouchableOpacity>
   );
 };
 
