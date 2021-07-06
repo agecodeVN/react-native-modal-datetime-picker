@@ -1,25 +1,29 @@
 import React, { useState } from "react";
 import { Button, Platform, StyleSheet, Switch, Text, View } from "react-native";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+import DateTimePickerModal from "./src";
 
 const App = () => {
+  const [show, setShow] = useState(false);
   const [pickerMode, setPickerMode] = useState(null);
   const [inline, setInline] = useState(false);
 
   const showDatePicker = () => {
     setPickerMode("date");
+    setShow(true);
   };
 
   const showTimePicker = () => {
     setPickerMode("time");
+    setShow(true);
   };
 
   const showDateTimePicker = () => {
     setPickerMode("datetime");
+    setShow(true);
   };
 
   const hidePicker = () => {
-    setPickerMode(null);
+    setShow(false);
   };
 
   const handleConfirm = (date) => {
@@ -40,11 +44,12 @@ const App = () => {
         </View>
       )}
       <DateTimePickerModal
-        isVisible={pickerMode !== null}
+        isVisible={show}
         mode={pickerMode}
         onConfirm={handleConfirm}
         onCancel={hidePicker}
         display={inline ? "inline" : undefined}
+        date={new Date()}
       />
     </View>
   );

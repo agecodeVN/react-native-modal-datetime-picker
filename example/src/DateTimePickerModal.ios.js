@@ -7,8 +7,9 @@ import {
   View,
   Appearance,
 } from "react-native";
-import DateTimePicker from "react-native-date-picker";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import Modal from "./Modal";
+import { isIphoneX } from "./utils";
 
 export const BACKGROUND_COLOR_LIGHT = "white";
 export const BACKGROUND_COLOR_DARK = "#0E0E0E";
@@ -100,7 +101,7 @@ export class DateTimePickerModal extends React.PureComponent {
     this.setState({ isPickerVisible: false });
   };
 
-  handleChange = (date) => {
+  handleChange = (event, date) => {
     if (this.props.onChange) {
       this.props.onChange(date);
     }
@@ -142,8 +143,11 @@ export class DateTimePickerModal extends React.PureComponent {
     const ConfirmButtonComponent = customConfirmButtonIOS || ConfirmButton;
     const CancelButtonComponent = customCancelButtonIOS || CancelButton;
     const HeaderComponent = customHeaderIOS || Header;
+    const PickerComponent = customPickerIOS || DateTimePicker;
 
-    const themedContainerStyle = pickerStyles.containerLight;
+    const themedContainerStyle = _isDarkModeEnabled
+      ? pickerStyles.containerDark
+      : pickerStyles.containerLight;
 
     const headerText =
       headerTextIOS ||
@@ -176,10 +180,11 @@ export class DateTimePickerModal extends React.PureComponent {
               pickerStyleIOS,
             ]}
           >
-            <DateTimePicker
+            <PickerComponent
+              display={display || "spinner"}
               {...otherProps}
-              date={this.state.currentDate || new Date()}
-              onDateChange={this.handleChange}
+              value={this.state.currentDate}
+              onChange={this.handleChange}
             />
           </View>
           <ConfirmButtonComponent
@@ -204,8 +209,6 @@ const pickerStyles = StyleSheet.create({
     margin: 10,
   },
   container: {
-    backgroundColor: "white",
-    alignItems: "center",
     borderRadius: BORDER_RADIUS,
     marginBottom: 8,
     overflow: "hidden",
@@ -248,13 +251,22 @@ export const headerStyles = StyleSheet.create({
 });
 
 export const ConfirmButton = ({
+  isDarkModeEnabled,
   onPress,
   label,
   style = confirmButtonStyles,
 }) => {
+  const themedButtonStyle = isDarkModeEnabled
+    ? confirmButtonStyles.buttonDark
+    : confirmButtonStyles.buttonLight;
+
+  const underlayColor = isDarkModeEnabled
+    ? HIGHLIGHT_COLOR_DARK
+    : HIGHLIGHT_COLOR_LIGHT;
   return (
     <TouchableHighlight
-      style={[style.button]}
+      style={[themedButtonStyle, style.button]}
+      underlayColor={underlayColor}
       onPress={onPress}
       accessible={true}
       accessibilityRole="button"
@@ -293,8 +305,12 @@ export const CancelButton = ({
   label,
   style = cancelButtonStyles,
 }) => {
-  const themedButtonStyle = cancelButtonStyles.buttonLight;
-  const underlayColor = HIGHLIGHT_COLOR_LIGHT;
+  const themedButtonStyle = isDarkModeEnabled
+    ? cancelButtonStyles.buttonDark
+    : cancelButtonStyles.buttonLight;
+  const underlayColor = isDarkModeEnabled
+    ? HIGHLIGHT_COLOR_DARK
+    : HIGHLIGHT_COLOR_LIGHT;
   return (
     <TouchableHighlight
       style={[style.button, themedButtonStyle]}
@@ -313,6 +329,7 @@ export const cancelButtonStyles = StyleSheet.create({
   button: {
     borderRadius: BORDER_RADIUS,
     height: 57,
+    marginBottom: isIphoneX() ? 20 : 0,
     justifyContent: "center",
   },
   buttonLight: {

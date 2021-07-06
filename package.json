@@ -36,7 +36,8 @@
     "example:ios": "cd example && react-native run-ios"
   },
   "dependencies": {
-    "prop-types": "^15.7.2"
+    "prop-types": "^15.7.2",
+    "react-native-date-picker": "^3.3.2"
   },
   "devDependencies": {
     "@semantic-release/git": "^9.0.0",
